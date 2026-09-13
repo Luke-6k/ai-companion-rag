@@ -126,6 +126,12 @@ def health() -> dict:
         "status": "ok",
         "llm": get_llm().health(),
         "knowledge_base": get_kb().stats(),
+        # 把检索默认参数一并暴露,前端据此初始化控件,避免前后端默认值不一致
+        "retrieval": {
+            "top_k": settings.top_k,
+            "score_threshold": settings.score_threshold,
+            "history_rounds": settings.history_rounds,
+        },
     }
 
 

@@ -90,7 +90,11 @@ if "character" not in st.session_state:
 st.title("AI 伴侣 · 知识库问答")
 st.caption("Streamlit 前端 + FastAPI 后端 + 可插拔向量检索(RAG)")
 
-health = api_get("/health")
+health = api_get("/health") or {}
+retrieval = health.get("retrieval", {}) if isinstance(health, dict) else {}
+default_top_k = int(retrieval.get("top_k", 4))
+default_threshold = float(retrieval.get("score_threshold", 0.10))
+
 if health:
     llm = health.get("llm", {})
     kb = health.get("knowledge_base", {})
@@ -105,9 +109,10 @@ with st.sidebar:
     mode = "rag" if mode_label.startswith("知识库") else "chat"
 
     if mode == "rag":
-        top_k = st.slider("召回片段数", 1, 10, 4)
-        threshold = st.slider("相似度阈值", 0.0, 0.5, 0.05, step=0.01,
-                              help="低于该分数的片段会被丢弃;语料很小时可调到 0")
+        top_k = st.slider("召回片段数", 1, 10, default_top_k)
+        threshold = st.slider("相似度阈值", 0.0, 0.5, default_threshold, step=0.01,
+                              help="低于该分数的片段会被丢弃,默认值取自后端配置(SCORE_THRESHOLD);"
+                                   "调低召回更多但更容易答无关问题,调高更保守")
     else:
         st.text_input("昵称", key="nickname")
         st.text_area("性格", key="character", height=80)
