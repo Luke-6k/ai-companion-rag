@@ -1,0 +1,40 @@
+# 一条命令启动完整应用:docker compose up --build
+services:
+  api:
+    build: .
+    image: ai-companion-rag:latest
+    container_name: ai-companion-api
+    command: uvicorn app.api.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      MOCK_LLM: ${MOCK_LLM:-false}
+      LLM_MODEL: ${LLM_MODEL:-deepseek-v4-pro}
+      EMBEDDING_BACKEND: ${EMBEDDING_BACKEND:-hash}
+      EMBEDDING_DIM: ${EMBEDDING_DIM:-4096}
+      SCORE_THRESHOLD: ${SCORE_THRESHOLD:-0.10}
+      DATA_DIR: /app/data
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/health',timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+    restart: unless-stopped
+
+  ui:
+    build: .
+    image: ai-companion-rag:latest
+    container_name: ai-companion-ui
+    command: streamlit run ui/streamlit_app.py --server.address 0.0.0.0 --server.port 8501
+    ports:
+      - "8501:8501"
+    environment:
+      API_BASE: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
