@@ -1,0 +1,25 @@
+﻿id,type,question,expected_keyword
+1,answerable,什么是 RAG?为什么需要它?,检索增强生成
+2,answerable,RAG 的完整流程包含哪几个环节?,文档解析
+3,answerable,知识库文档为什么要切分?切多大合适?,chunk_overlap
+4,answerable,片段之间保留重叠是为了解决什么问题?,chunk_overlap
+5,answerable,"稀疏向量和稠密向量有什么区别,各自优缺点是什么?",BM25
+6,answerable,余弦相似度算出来之后为什么还要设阈值?,score_threshold
+7,answerable,怎么防止大模型一本正经地胡说八道?,三道防线
+8,answerable,什么时候应该从自建向量库换成 FAISS 或 Milvus?,FAISS
+9,answerable,为什么接口要用流式返回?SSE 和 WebSocket 怎么选?,SSE
+10,answerable,FastAPI 相比其他 Web 框架好在哪?,Pydantic
+11,answerable,为什么要把前端和后端拆成两个服务?,能力复用
+12,answerable,Docker 是怎么保证不同机器上运行结果一致的?,只读层
+13,answerable,为什么容器里不建议用 root 用户跑程序?,最小权限原则
+14,answerable,调用大模型时常见的失败有哪些?分别怎么处理?,429
+15,answerable,多轮对话越来越长怎么办?token 怎么控制?,滑动窗口
+16,answerable,会话记录直接写文件有什么风险?,原子写入
+17,answerable,向量维度对检索效果有影响吗?,哈希冲突
+18,answerable,"检索质量不好,光改提示词有用吗?",垃圾进
+19,unanswerable,这个系统怎么处理用户注册和登录?,
+20,unanswerable,支持语音输入和语音合成吗?,
+21,unanswerable,"服务部署在哪个云平台,服务器配置是多少?",
+22,unanswerable,模型微调时的学习率和批大小是多少?,
+23,unanswerable,"团队现在有多少人,怎么分工?",
+24,unanswerable,有没有做数据脱敏和权限审计?,
