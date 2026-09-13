@@ -1,0 +1,11 @@
+# 运行时依赖
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
+python-multipart>=0.0.9
+python-dotenv>=1.0
+openai>=1.30
+numpy>=1.26
+pypdf>=4.2
+requests>=2.31
+streamlit>=1.40
